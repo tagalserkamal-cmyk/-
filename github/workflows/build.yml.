@@ -1,0 +1,30 @@
+name: Build Windows installer
+o n:
+workflow_dispatch:
+push:
+branches: [main,master
+jobs:
+build:
+runs-on: windows-latest
+steps:
+- uses: actions/checkout@v4
+name: Unzip project
+shell: pwsh
+run:
+$z = Get-Childltem -Filter *.zip I Select-Obiect -F
+rst 1
+New-Item -ItemType Directory -Path app I Out-Nu
+tar -xf $z.Name -C app
+Get-Childltem app
+- uses: actions/setup-node@v4
+with:
+node-version: 20
+name: Install
+working-directory: app
+run: npm install
+- name: Build installer
+working-directory: app
+run: npm run dist
+- uses: actions/upload-artifact@v4!
+with:
+name: Makhzani-Setup path: app/dist/*.exe
